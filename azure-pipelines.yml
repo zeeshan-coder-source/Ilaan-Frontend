@@ -1,0 +1,98 @@
+# Node.js with React
+# Build a Node.js project that uses React.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+  branches:
+    include:
+      - dev
+      - main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '20.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    npm install
+    
+  displayName: 'Installing dependencies'
+
+- script: |
+    set -e
+
+    branch="$(Build.SourceBranchName)"
+    echo "Building website for branch: $branch"
+
+    if [ "$branch" = "dev" ]; then
+      export VITE_API_BASE_URL="$VITE_API_BASE_URL_DEV"
+      export VITE_API_KEY="$VITE_API_KEY_DEV"
+    elif [ "$branch" = "main" ]; then
+      export VITE_API_BASE_URL="$VITE_API_BASE_URL_MAIN"
+      export VITE_API_KEY="$VITE_API_KEY_MAIN"
+    else
+      echo "No API configuration found for branch $branch."
+      exit 1
+    fi
+
+    echo "Using API configuration for branch: $branch"
+
+    npm run build
+  displayName: 'Build Website Dist'
+  env:
+    VITE_API_BASE_URL_DEV: $(VITE_API_BASE_URL_DEV)
+    VITE_API_BASE_URL_MAIN: $(VITE_API_BASE_URL_MAIN)
+    VITE_API_KEY_DEV: $(VITE_API_KEY_DEV)
+    VITE_API_KEY_MAIN: $(VITE_API_KEY_MAIN)
+
+- script: |
+    set -e
+    python3 -m pip install --upgrade --user awscli
+    echo "##vso[task.prependpath]$HOME/.local/bin"
+    aws --version
+  displayName: 'Install AWS CLI'
+
+- script: |
+    set -e
+
+    branch="$(Build.SourceBranchName)"
+    echo "Deploying Website for branch: $branch"
+
+    if [ "$branch" = "dev" ]; then
+      S3_BUCKET="$S3_BUCKET_DEV"
+      DIST_ID="$CLOUDFRONT_DIST_DEV"
+    elif [ "$branch" = "main" ]; then
+      S3_BUCKET="$S3_BUCKET_MAIN"
+      DIST_ID="$CLOUDFRONT_DIST_MAIN"
+    else
+      echo "No deployment configured for branch $branch. Skipping."
+      exit 0
+    fi
+
+    echo "Target S3 bucket: $S3_BUCKET"
+    echo "CloudFront distribution: $DIST_ID"
+
+    S3_URI="s3://$S3_BUCKET"
+
+    aws s3 rm "$S3_URI" --recursive
+    aws s3 sync ./dist "$S3_URI" --delete
+
+    aws cloudfront create-invalidation \
+      --distribution-id "$DIST_ID" \
+      --paths "/*"
+
+    echo "Website deployment complete."
+  env:
+    AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY)
+    AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_KEY)
+    AWS_DEFAULT_REGION: $(AWS_DEFAULT_REGION)
+    S3_BUCKET_DEV: $(development_s3_bucket)
+    CLOUDFRONT_DIST_DEV: $(development_cf_distribution)
+    S3_BUCKET_MAIN: $(main_s3_bucket)
+    CLOUDFRONT_DIST_MAIN: $(main_cf_distribution)
+  displayName: 'Deploy customer portal'
