@@ -20,6 +20,7 @@ function CustomBulletIcon() {
 export default function SignageGrowth() {
   return (
     <section
+      data-header-theme="light"
       className="
         relative w-full bg-no-repeat bg-cover bg-center md:bg-top
         bg-[image:var(--sg-bg-mobile)]

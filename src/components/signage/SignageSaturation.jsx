@@ -164,6 +164,7 @@ function FeatureIcon() {
 export default function SignageSaturation() {
   return (
     <section
+      data-header-theme="light"
       className="
         relative w-full bg-[#CBEA33] text-black overflow-hidden select-none
         aspect-[405/1001] lg:aspect-auto lg:min-h-screen

@@ -19,6 +19,7 @@ import './App.css';
 import ProductsPage from './pages/Products';
 import ProductDetailPage from './pages/ProductDetailPage';
 import DigitalSignage from './pages/DigitalSignage';
+import Corporate from './pages/Corporate';
 import MediaPage from './pages/Media';
 import LinkPage from './pages/LinkPage';
 
@@ -94,12 +95,13 @@ function PublicApp() {
               <Route path="/products" element={<ProductsPage />} />
               <Route path="/products/:productSlug" element={<ProductDetailPage />} />
               <Route path="/digital-signage" element={<DigitalSignage />} />
+              <Route path="/corporate" element={<Corporate />} />
               <Route path="/media" element={<MediaPage />} />
               <Route path="/LinkPage" element={<LinkPage />} />
             </Routes>
           </div>
         )}
-      </AnimatePresence>
+      </AnimatePresence> 
     </div>
   );
 }

@@ -24,7 +24,10 @@ export default function MoreThanHardware() {
   ];
 
   return (
-    <section className="w-full bg-[#F3F3E7] text-[#0C0C0E] font-['Poppins',sans-serif] py-16 lg:py-24 px-6 sm:px-10 lg:px-14 min-h-[1146px] flex flex-col justify-center">
+    <section
+      data-header-theme="light"
+      className="w-full bg-[#F3F3E7] text-[#0C0C0E] font-['Poppins',sans-serif] py-16 lg:py-24 px-6 sm:px-10 lg:px-14 min-h-[1146px] flex flex-col justify-center"
+    >
       <div className="w-full">
 
         {/* TOP SECTION: Text Info + Display Screens Image */}
