@@ -173,6 +173,7 @@ const featureList = [
 export default function SignageRevenue() {
   return (
     <section
+      data-header-theme="dark"
       className="
         relative w-full bg-black text-white overflow-hidden select-none
         aspect-[402/861] lg:aspect-auto lg:min-h-screen lg:max-h-[1080px] min-[2560px]:max-h-[1440px]

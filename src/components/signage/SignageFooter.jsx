@@ -190,7 +190,10 @@ import FooterLeft from '../../assets/LINK/footer-left.png';
 
 const SignageFooter = () => {
   return (
-    <section className="w-full overflow-x-hidden bg-[#D0FF00] py-4 px-2 sm:py-6 sm:px-3 lg:py-8 lg:px-4 xl:py-10 xl:px-5 3xl:py-12 3xl:px-6 4xl:py-14 4xl:px-8 flex justify-center items-center font-['Inter',sans-serif]">
+    <section
+      data-header-theme="light"
+      className="w-full overflow-x-hidden bg-[#D0FF00] py-4 px-2 sm:py-6 sm:px-3 lg:py-8 lg:px-4 xl:py-10 xl:px-5 3xl:py-12 3xl:px-6 4xl:py-14 4xl:px-8 flex justify-center items-center font-['Inter',sans-serif]"
+    >
       <div className="w-full max-w-full sm:max-w-full lg:max-w-[100%] mx-auto relative flex justify-center items-center">
         {/* Desktop Outline Container */}
         <div className="hidden lg:block absolute inset-0 w-full h-full pointer-events-none z-0">

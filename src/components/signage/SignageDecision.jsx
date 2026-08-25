@@ -62,6 +62,7 @@ const figmaLinearBorderStyle = {
 export default function SignageDecision() {
   return (
     <section
+      data-header-theme="dark"
       className="
         relative w-full bg-black text-white overflow-hidden font-sans select-none
         aspect-[401/1752] lg:aspect-auto lg:min-h-screen
